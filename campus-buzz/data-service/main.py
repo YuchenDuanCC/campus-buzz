@@ -19,11 +19,11 @@ app.add_middleware(
 DB_PATH = os.environ.get("DB_PATH", "submissions.db")
 
 class SubmissionCreate(BaseModel):
-    title: str
-    description: str
-    location: str
-    date: str
-    organiser: str
+    title: str = ""
+    description: str = ""
+    location: str = ""
+    date: str = ""
+    organiser: str = ""
 
 
 class SubmissionUpdate(BaseModel):

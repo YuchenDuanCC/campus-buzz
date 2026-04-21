@@ -1,0 +1,31 @@
+services:
+  presentation-service:
+    build: ./presentation-service
+    container_name: presentation-service
+    ports:
+      - "8081:80"
+    depends_on:
+      - workflow-service
+
+  workflow-service:
+    build: ./workflow-service
+    container_name: workflow-service
+    ports:
+      - "5001:5001"
+    environment:
+      - DATA_SERVICE_URL=http://data-service:5002
+      - SUBMISSION_EVENT_URL=${SUBMISSION_EVENT_URL}
+    depends_on:
+      - data-service
+    command: uvicorn main:app --host 0.0.0.0 --port 5001
+
+  data-service:
+    build: ./data-service
+    container_name: data-service
+    ports:
+      - "5002:5002"
+    environment:
+      - DB_PATH=/app/data/submissions.db
+    volumes:
+      - ./data:/app/data
+    command: uvicorn main:app --host 0.0.0.0 --port 5002
