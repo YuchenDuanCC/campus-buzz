@@ -1,8 +1,8 @@
 # Campus Buzz Test Results
 
-Generated: 2026-04-21 17:22:14
+Generated: 2026-04-21 21:19:25
 
-API Base: `http://localhost:5001`
+API Base: `http://8.140.220.43:5001`
 
 Summary: **5/5** test cases passed.
 
