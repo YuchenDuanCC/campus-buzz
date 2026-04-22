@@ -35,7 +35,7 @@ def health():
 
 @app.post("/submit")
 def submit_event(submission: SubmissionCreate):
-    # 1. 先创建初始记录
+
     try:
         response = requests.post(
             f"{DATA_SERVICE_URL}/submissions",
@@ -57,7 +57,6 @@ def submit_event(submission: SubmissionCreate):
     created_record = response.json()
     submission_id = created_record["submission_id"]
 
-    # 2. 真正触发 Submission Event Function
     try:
         trigger_response = requests.post(
             SUBMISSION_EVENT_URL,
@@ -76,7 +75,7 @@ def submit_event(submission: SubmissionCreate):
             detail=f"Submission Event Function error: {trigger_response.text}"
         )
 
-    # 3. 返回给前端
+
     return {
         "message": "Submission received and workflow started",
         "submission_id": submission_id,

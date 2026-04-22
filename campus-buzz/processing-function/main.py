@@ -33,7 +33,6 @@ def is_valid_date_format(date_str: str) -> bool:
 def assign_category(title: str, description: str) -> str:
     text = f"{title} {description}".lower()
 
-    # 优先级：OPPORTUNITY > ACADEMIC > SOCIAL > GENERAL
     if any(keyword in text for keyword in ["career", "internship", "recruitment"]):
         return "OPPORTUNITY"
     if any(keyword in text for keyword in ["workshop", "seminar", "lecture"]):
@@ -58,7 +57,6 @@ def health():
 
 @app.post("/invoke")
 def invoke(record: SubmissionRecord):
-    # 1. 必填项检查：只要缺失，直接 INCOMPLETE
     required_fields = {
         "title": record.title,
         "description": record.description,
@@ -77,11 +75,9 @@ def invoke(record: SubmissionRecord):
             "note": f"Missing required field(s): {', '.join(missing)}."
         }
 
-    # 2. 分类与优先级
     category = assign_category(record.title, record.description)
     priority = assign_priority(category)
 
-    # 3. 日期格式检查
     if not is_valid_date_format(record.date):
         return {
             "submission_id": record.id,
@@ -91,7 +87,7 @@ def invoke(record: SubmissionRecord):
             "note": "The date format is invalid. Please use YYYY-MM-DD."
         }
 
-    # 4. 描述长度检查
+
     if len(record.description.strip()) < 40:
         return {
             "submission_id": record.id,
@@ -101,7 +97,7 @@ def invoke(record: SubmissionRecord):
             "note": "The description is too short. It must be at least 40 characters long."
         }
 
-    # 5. 全部通过
+
     return {
         "submission_id": record.id,
         "status": "APPROVED",
