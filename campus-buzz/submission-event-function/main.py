@@ -52,7 +52,6 @@ def invoke(event: SubmissionEvent):
 
     record = response.json()
 
-    # 2. 调用 Processing Function 计算结果
     try:
         process_response = requests.post(
             PROCESSING_FUNCTION_URL,
@@ -73,7 +72,6 @@ def invoke(event: SubmissionEvent):
 
     processed_result = process_response.json()
 
-    # 3. 调用 Result Update Function 回写结果
     try:
         update_response = requests.post(
             RESULT_UPDATE_FUNCTION_URL,
